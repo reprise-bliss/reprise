@@ -13,4 +13,7 @@ setup(
             "magnetron = magnetron.__main__:main",
         ],
     },
+    data_files=[
+        ("share/man/man1", ["debian/magnetron.1"]),
+    ],
 )

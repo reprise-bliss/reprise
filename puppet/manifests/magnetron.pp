@@ -14,13 +14,22 @@ exec { "update":
 }
 
 file { "/home/vagrant/.bash_login":
-  content => "cd /home/vagrant/magnetron",
+  content => "export LC_ALL=C
+alias magnetron='PYTHONPATH=/home/vagrant/magnetron/ python3 -m magnetron'
+cd /home/vagrant/magnetron
+",
 }
 
 # basic dependencies
 
 package { "python3": }
 package { "python3-setuptools": }
+package { "dpkg-dev": }
+package { "debhelper": }
+package { "lintian": }
+package { "reprepro": }
+package { "pep8": }
+
 
 # install docopt
 

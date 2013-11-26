@@ -1,3 +1,4 @@
 /.vagrant
 __pycache__/
 magnetron.egg-info/
+/build/
