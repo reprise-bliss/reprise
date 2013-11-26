@@ -16,7 +16,7 @@ Options:
 import sys
 import docopt
 
-from magnetron.reprepro import Repository, RepositoryError, initialize
+from magnetron.repository import Repository, RepositoryError, initialize
 
 
 def init(repository=None):
