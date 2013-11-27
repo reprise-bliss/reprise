@@ -1,5 +1,6 @@
 import os
 import re
+import shutil
 
 import magnetron.reprepro
 
@@ -39,6 +40,10 @@ def check_name(name):
     if not name_re.match(name):
         raise RepositoryError("invalid name " + repr(name))
     return name
+
+
+def repositories():
+    return list(sorted(Repository(i) for i in os.listdir(base_path)))
 
 
 class Repository:
@@ -100,3 +105,6 @@ class Repository:
     def packages(self, distribution):
         ''' list packages per distribution '''
         yield from magnetron.reprepro.list_packages(self.path, distribution)
+
+    def __repr__(self):
+        return "<Repository '{}'>".format(self.name)

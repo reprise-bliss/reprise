@@ -13,10 +13,54 @@ is tested separately.
 Magnetron stores all of the data in `/srv/magnetron`, which we will remove
 first of all:
 
-    >>> shutil.rmtree("/srv/magnetron", ignore_errors=True)
+    >>> shutil.rmtree(base_path, ignore_errors=True)
 
-We can now use `magnetron init` to initialize the files needed on the server:
+Right now, we can'r create repositories because the basic file structure
+hasn't been initialized yet:
 
+    >>> Repository.create("test")
+    Traceback (most recent call last):
+      ...
+    magnetron.repository.RepositoryError: not initialized
+
+We can now use `magnetron.repository.initialize()` to initialize the files
+needed on the server:
+
+    >>> os.path.exists(base_path)
+    False
     >>> initialize()
-    >>> os.listdir(base_path)
+    >>> os.path.exists(base_path)
+    True
+
+## Managing repositories
+
+After initializing the file system structure, we can start adding repositories:
+
+    >>> repository = Repository.create("test")
+    >>> repositories()  # n.b: this is defined in magnetron.repository
+    [<Repository 'test'>]
+
+A repository also comes with its configuration, generated from templates:
+
+    >>> os.listdir(repository.path)
+    ['conf']
+    >>> with open(os.path.join(repository.path, "conf", "distributions")) as f:
+    ...     print(f.read())
+    ...
+    Origin: ...
+    Label: test
+    ...
+    SignWith: ...
+    ...
+
+We can delete repositories by using their `expunge()` method:
+
+    >>> repository.expunge()
+    >>> os.path.exists(repository.path)
+    False
+    >>> repository.expunge()
+    Traceback (most recent call last):
+      ...
+    FileNotFoundError: ...
+    >>> repositories()
     []
