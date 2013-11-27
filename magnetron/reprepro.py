@@ -7,6 +7,7 @@ def _reprepro(path, command, quiet=False):
     return subprocess.check_output(
         command, shell=True, stderr=stderr).decode("utf-8")
 
+
 def list_packages(path, distribution="dist"):
     return _reprepro(path, "list " + distribution, quiet=True)
 

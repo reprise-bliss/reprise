@@ -11,6 +11,9 @@ coverage: clean
 	coverage3 html
 	coverage3 report
 
+pep8:
+	pep8 .
+
 deb: clean-all
 	dpkg-buildpackage -b -us -uc -tc
 	lintian --pedantic ../magnetron_*.deb ../magnetron_*.changes

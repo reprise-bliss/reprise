@@ -1,4 +1,3 @@
-import os.path
 import io
 import doctest
 
@@ -15,6 +14,7 @@ def load_tests(loader, tests, ignore):
     from magnetron.remote import Remote
     from magnetron.gpg import get_default_public_key, get_default_key_id
     from magnetron.__main__ import main as _main
+
     def main(*a):
         try:
             import sys
@@ -34,7 +34,7 @@ def load_tests(loader, tests, ignore):
     globs = {}
     globs.update({k: v for k, v in globals().items()})
     globs.update({k: v for k, v in locals().items()})
-    for fn  in ["integration.md", "main.md"]:
+    for fn in ["integration.md", "main.md"]:
         fn = os.path.relpath(os.path.join(
             os.path.dirname(__file__), "..", "tests", fn))
         tests.addTests(doctest.DocFileSuite(

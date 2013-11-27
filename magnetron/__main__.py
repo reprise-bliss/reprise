@@ -15,7 +15,8 @@ Options:
 
 '''
 
-import sys, os
+import sys
+import os
 import docopt
 
 from magnetron.remote import Remote, RemoteError
@@ -116,13 +117,13 @@ def main(argv=None):
     elif args["upload"]:
         upload(args["<repository>"], args["<file>"])
     elif args["delete"]:
-       delete(args["<repository>"], args["<package>"])
+        delete(args["<repository>"], args["<package>"])
     elif args["update"]:
-       update(args["<source-repository>"], args["<target-repository>"])
+        update(args["<source-repository>"], args["<target-repository>"])
     elif args["pull"]:
-       pull(args["<host>"], args["<remote-repository>"],
-            args["<local-repository>"], args["<user>@"],
-            bool(args["--dry-run"]))
+        pull(args["<host>"], args["<remote-repository>"],
+             args["<local-repository>"], args["<user>@"],
+             bool(args["--dry-run"]))
     else:  # pragma: no cover
         raise ValueError("invalid arguments")
 

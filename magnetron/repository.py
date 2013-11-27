@@ -20,6 +20,7 @@ Description: {description}
 SignWith: {sign_with}
 '''
 
+
 class RepositoryError(Exception):
 
     pass
