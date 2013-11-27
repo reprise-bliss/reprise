@@ -3,3 +3,5 @@ __pycache__/
 magnetron.egg-info/
 /build/
 /.tests_srv/
+.coverage
+htmlcov/

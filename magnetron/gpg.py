@@ -11,7 +11,7 @@ def get_default_public_key():
     output = _run("gpg --export -a").strip()
     if output:
         return output + "\n"
-    raise ValueError("could not get default gpg key")
+    raise ValueError("could not get default gpg key")  # pragma: no cover
 
 
 def get_default_key_id():
@@ -19,4 +19,4 @@ def get_default_key_id():
     for i in output:
         if i.startswith("pub ") and "/" in i and " " in i:
             return i.split("pub")[1].split("/")[1].split()[0]
-    raise ValueError("could not get default gpg key id")
+    raise ValueError("could not get default gpg key id")  # pragma: no cover

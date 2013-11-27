@@ -6,6 +6,10 @@ magnetron.egg-info:
 test: all
 	python3 setup.py test
 
+coverage: clean
+	coverage3 run --source=. setup.py test
+	coverage3 html
+
 deb: clean-all
 	dpkg-buildpackage -b -us -uc -tc
 	lintian --pedantic ../magnetron_*.deb ../magnetron_*.changes
@@ -18,9 +22,8 @@ install:
 endif
 
 clean:
-	rm -rf magnetron.egg-info
-	rm -rf magnetron/__pycache__/
-	rm -rf build/
+	rm -rf magnetron.egg-info magnetron/__pycache__/
+	rm -rf build/ .coverage htmlcov/
 
 clean-all: clean
 	rm -rf ../magnetron_*.deb ../magnetron_*.changes

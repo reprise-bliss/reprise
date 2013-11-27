@@ -48,12 +48,9 @@ class Package:
 
     def __init__(self, spec):
         self.spec = spec  # e.g.: raring|main|amd64: pep8 1.3.3-0ubuntu
-        try:
-            self.architecture = spec.split("|")[2]
-            self.name = spec.split()[1]
-            self.version = spec.split()[2]
-        except IndexError:
-            raise ValueError("invalid spec: " + repr(spec))
+        self.architecture = spec.split("|")[2]
+        self.name = spec.split()[1]
+        self.version = spec.split()[2]
 
     def __repr__(self):
         return "<Package {}>".format(repr(self.spec))

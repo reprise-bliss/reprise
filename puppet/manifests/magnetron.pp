@@ -24,13 +24,13 @@ cd /home/vagrant/magnetron
 # basic dependencies
 
 package { "python3": }
+package { "python-dev": }
 package { "python3-setuptools": }
 package { "dpkg-dev": }
 package { "debhelper": }
 package { "lintian": }
 package { "reprepro": }
 package { "pep8": }
-
 
 # install docopt
 
@@ -61,4 +61,15 @@ exec { "gpg --export -a > /home/vagrant/public.gpg":
   user => "vagrant",
   environment => ["HOME=/home/vagrant/"],
   require => Exec["import private key"],
+}
+
+# install coverage
+
+exec { "easy_install3 coverage":
+    creates => "/usr/local/bin/coverage3",
+    require => [
+        Package["python-dev"],
+        Package["python3"],
+        Package["python3-setuptools"],
+    ]
 }
