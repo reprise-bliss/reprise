@@ -25,7 +25,7 @@ def init(repository=None):
             initialize()
         else:
             Repository.create(repository)
-    except PermissionDeniedError as e:
+    except PermissionError as e:
         print(e, file=sys.stderr)
         sys.exit(1)
     except RepositoryError as e:
@@ -79,6 +79,7 @@ def update(source_repository, target_repository):
     except RepositoryError as e:
         print(e, file=sys.stderr)
         sys.exit(1)
+
 
 def main(argv=None):
     args = docopt.docopt(__doc__, argv=argv)

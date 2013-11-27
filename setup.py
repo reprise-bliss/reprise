@@ -5,6 +5,7 @@ setup(
     packages=[
         "magnetron",
     ],
+    test_suite="magnetron",
     install_requires={
         "docopt",
     },
