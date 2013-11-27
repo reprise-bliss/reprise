@@ -29,7 +29,7 @@ def init(repository=None):
             initialize()
         else:
             Repository.create(repository)
-    except PermissionError as e:
+    except PermissionError as e:  # pragma: no cover
         print(e, file=sys.stderr)
         sys.exit(1)
     except RepositoryError as e:
@@ -39,12 +39,8 @@ def init(repository=None):
 
 def show(repository=None, package=None):
     if repository is None and package is None:
-        try:
-            for repository in repositories():
-                print(repository.name)
-        except RepositoryError as e:
-            print(e, file=sys.stderr)
-            sys.exit(1)
+        for repository in repositories():
+            print(repository.name)
     elif package is None:
         try:
             for i in Repository(repository).packages():
@@ -123,9 +119,9 @@ def main(argv=None):
        pull(args["<host>"], args["<remote-repository>"],
             args["<local-repository>"], args["<user>@"],
             bool(args["--dry-run"]))
-    else:
+    else:  # pragma: no cover
         raise ValueError("invalid arguments")
 
 
 if __name__ == "__main__":
-    main()
+    main()  # pragma: no cover
