@@ -4,7 +4,8 @@ magnetron
 Usage:
     magnetron init [<repository>]
     magnetron show [<repository> [<package>]]
-    magnetron pull [--dry-run] [<user>@]<host> <repository>
+    magnetron pull [--dry-run] [<user>@]<host> <remote-repository>\
+ <local-repository>
     magnetron upload <repository> <file>
     magnetron delete <repository> [<package>]
     magnetron update <source-repository> <target-repository>
@@ -92,15 +93,15 @@ def update(source_repository, target_repository):
         sys.exit(1)
 
 
-def pull(host, repository, user=None, dry_run=False):
+def pull(host, remote_repository, local_repository, user=None, dry_run=False):
     user = user or os.getlogin()
-    remote = Remote(user, host, repository)
+    host = host.split("@")[-1]
+    remote = Remote(user, host, remote_repository, local_repository)
     try:
         if dry_run:
             remote.packages()
         else:
             remote.synchronize()
-            # sign all repos
     except RemoteError as e:
         print(e, file=sys.stderr)
         sys.exit(1)
@@ -119,7 +120,8 @@ def main(argv=None):
     elif args["update"]:
        update(args["<source-repository>"], args["<target-repository>"])
     elif args["pull"]:
-       pull(args["<host>"], args["<repository>"], args["<user>@"],
+       pull(args["<host>"], args["<remote-repository>"],
+            args["<local-repository>"], args["<user>@"],
             bool(args["--dry-run"]))
     else:
         raise ValueError("invalid arguments")

@@ -11,6 +11,7 @@ def load_tests(loader, tests, ignore):
     shutil.rmtree(magnetron.repository.base_path, ignore_errors=True)
     from magnetron.repository import Repository, RepositoryError
     from magnetron.repository import initialize, repositories, base_path
+    from magnetron.remote import Remote
     globs = {}
     globs.update({k: v for k, v in globals().items()})
     globs.update({k: v for k, v in locals().items()})

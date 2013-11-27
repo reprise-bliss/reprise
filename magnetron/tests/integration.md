@@ -99,3 +99,11 @@ the "unstable" repository as a source.
     {'pep8'}
     >>> {i.name for i in stable.packages()}
     {'pep8'}
+
+## Pulling remote repositories
+
+It is possible to pull packages from a remote server as far as ssh access to
+the remote host is given.
+
+    >>> remote = Remote("vagrant", "localhost", "test", "synced")
+    >>> remote.packages()
