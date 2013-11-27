@@ -23,7 +23,7 @@ class Remote:
             n, self.user, self.host, os.path.abspath(base_path),
             self.remote, os.path.abspath(self.local.path))
         status, output = subprocess.getstatusoutput(rsync)
-        if status != 0:
+        if status != 0:  # pragma: no cover
             raise RemoteError(rsync, output)
         if verbose:
             print(output)

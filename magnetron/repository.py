@@ -49,7 +49,7 @@ class Package:
 
     def __init__(self, spec):
         self.spec = spec  # e.g.: raring|main|amd64: pep8 1.3.3-0ubuntu
-        self.architecture = spec.split("|")[2]
+        self.architecture = spec.split("|")[2].split(":")[0]
         self.name = spec.split()[1]
         self.version = spec.split()[2]
 
@@ -88,7 +88,7 @@ class Repository:
     def get(self, package):
         ''' get information about a package '''
         if package in (i.name for i in self.packages()):
-            return [i for i in self.packages()]
+            return [i for i in self.packages() if i.name == package]
         raise RepositoryError("package not found")
 
     def add(self, filename):

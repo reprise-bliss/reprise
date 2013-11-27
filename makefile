@@ -9,6 +9,7 @@ test: all
 coverage: clean
 	coverage3 run --source=. setup.py test
 	coverage3 html
+	coverage3 report
 
 deb: clean-all
 	dpkg-buildpackage -b -us -uc -tc

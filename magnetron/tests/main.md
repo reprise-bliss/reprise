@@ -42,16 +42,14 @@ Command: `magnetron upload <repository> <file>`
     repository doesn't exist
 
     >>> main("show", "test-repo", "pep8")
-    <Package ... pep8...
-    ...
+    pep8 ...-0ubuntu1 (amd64, armhf, i386)
 
 Command: `magnetron update <source-repository> <target-repository>`
 
     >>> main("init", "test-repo-2")
     >>> main("update", "test-repo", "test-repo-2")
     >>> main("show", "test-repo")
-    <Package ... pep8...
-    ...
+    pep8 ...-0ubuntu1
     >>> main("update", "doesn't exist", "test-repo-2")
     repository doesn't exist
 
@@ -76,3 +74,18 @@ Command: `magnetron delete <repository>`
     repository doesn't exist
 
 Command: `magnetron pull`
+
+    >>> main("init", "remote")
+    >>> main("upload", "remote", filename)
+
+    >>> main("pull", "--dry-run", "localhost", "remote", "local")
+    receiving incremental file list
+    remote/
+    ...
+    remote/pool/
+    ...
+    total size is ...  speedup is ... (DRY RUN)
+
+    >>> main("pull", "localhost", "remote", "local")
+    >>> main("show", "local")
+    pep8 1.3.3-0ubuntu1

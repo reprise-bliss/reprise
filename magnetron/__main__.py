@@ -43,15 +43,19 @@ def show(repository=None, package=None):
             print(repository.name)
     elif package is None:
         try:
+            seen = set()
             for i in Repository(repository).packages():
-                print(i)
+                if i.name not in seen:
+                    print(i.name, i.version)
+                    seen |= {i.name}
         except RepositoryError as e:
             print(e, file=sys.stderr)
             sys.exit(1)
     else:
         try:
-            for i in Repository(repository).get(package):
-                print(i)
+            packages = Repository(repository).get(package)
+            print(packages[0].name, packages[0].version,
+                  "(" + ", ".join(i.architecture for i in packages) + ")")
         except RepositoryError as e:
             print(e, file=sys.stderr)
             sys.exit(1)
@@ -98,7 +102,7 @@ def pull(host, remote_repository, local_repository, user=None, dry_run=False):
             remote.packages()
         else:
             remote.synchronize()
-    except RemoteError as e:
+    except RemoteError as e:  # pragma: no cover
         print(e, file=sys.stderr)
         sys.exit(1)
 
