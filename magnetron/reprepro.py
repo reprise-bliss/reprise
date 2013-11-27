@@ -1,18 +1,18 @@
 import subprocess
 
 
-def _reprepro(path, command):
+def _reprepro(path, command, quiet=False):
     command = "reprepro -b {} ".format(path) + command
+    stderr = subprocess.DEVNULL if quiet else None
     return subprocess.check_output(
-        command, shell=True).decode("utf-8")
+        command, shell=True, stderr=stderr).decode("utf-8")
 
-def list_packages(path, distribution):
-    return _reprepro(path, "list " + distribution)
+def list_packages(path, distribution="dist"):
+    return _reprepro(path, "list " + distribution, quiet=True)
 
 
-def include_deb(path, filename, distribution):
+def include_deb(path, filename, distribution="dist"):
     return _reprepro(path, "includedeb {} {}".format(distribution, filename))
 
-
-def remove(path, package, distribution):
-    return _reprepro(path, "remove {} {}".format(path, distribution, package))
+def remove(path, package, distribution="dist"):
+    return _reprepro(path, "remove {} {}".format(distribution, package))
