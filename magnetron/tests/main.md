@@ -69,6 +69,8 @@ Command: `magnetron delete <repository>`
     >>> main("delete", "test-repo")
     >>> main("show")
     test-repo-2
+    >>> main("delete", "test-repo-2")
+    >>> main("show")
 
     >>> main("delete", "doesnt-exist")
     repository doesn't exist

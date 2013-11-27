@@ -73,3 +73,19 @@ exec { "easy_install3 coverage":
         Package["python3-setuptools"],
     ]
 }
+
+# set up local ssh keys
+
+exec { "ssh-keygen -t rsa -N '' -f ~/.ssh/id_rsa":
+  creates => "/home/vagrant/.ssh/id_rsa.pub",
+  user => "vagrant",
+  environment => ["HOME=/home/vagrant/"],
+}
+
+exec { "cat ~/.ssh/id_rsa.pub >> ~/.ssh/authorized_keys && \
+      ssh-keyscan -t rsa localhost >> ~/.ssh/known_hosts":
+  user => "vagrant",
+  environment => ["HOME=/home/vagrant/"],
+  unless => "grep vagrant@magnetron /home/vagrant/.ssh/authorized_keys",
+  require => Exec["ssh-keygen -t rsa -N '' -f ~/.ssh/id_rsa"],
+}

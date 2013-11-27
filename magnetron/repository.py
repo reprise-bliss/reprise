@@ -1,6 +1,7 @@
 import os
 import re
 import shutil
+import glob
 
 import magnetron.gpg
 import magnetron.reprepro
@@ -116,6 +117,13 @@ class Repository:
                 self.path).split("\n")):
             if spec:
                 yield Package(spec)
+
+    def reinitialize(self):
+        ''' re-add the packages in a broken repository '''
+        packages = glob.glob(os.path.join(
+            self.path, "**/**/**/**/**/*.deb"))
+        for i in packages:
+            self.add(i)
 
     def __repr__(self):
         return "<Repository '{}'>".format(self.name)

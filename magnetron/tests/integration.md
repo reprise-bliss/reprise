@@ -154,10 +154,35 @@ the "unstable" repository as a source.
     >>> {i.name for i in stable.packages()}
     {'pep8'}
 
+    stable.expunge()
+
 ## Pulling remote repositories
 
 It is possible to pull packages from a remote server as far as ssh access to
-the remote host is given.
+the remote host is given. Firstly we do a "dry run":
 
-    >>> remote = Remote("vagrant", "localhost", "test", "synced")
+    >>> remote = Remote("vagrant", "localhost", "pep8", "pep8-synced")
     >>> remote.packages()
+    receiving incremental file list
+    pep8/
+    pep8/conf/
+    pep8/conf/distributions
+    ...
+    pep8/dists/
+    ...
+    pep8/pool/main/p/pep8/pep8...all.deb
+    <BLANKLINE>
+    sent ... bytes  received ... bytes  ... bytes/sec
+    total size is ...  speedup is ... (DRY RUN)
+
+This will synchronize the two repositories (`pep8` and
+`rsync://localhost/../pep8-synced`):
+
+    >>> Repository("pep8-synced")
+    Traceback (most recent call last):
+      ...
+    magnetron.repository.RepositoryError: repository doesn't exist
+
+    >>> remote.synchronize()
+    >>> {i.name for i in Repository("pep8-synced").packages()}
+    {'pep8'}
