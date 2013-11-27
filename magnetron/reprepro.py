@@ -15,5 +15,4 @@ def include_deb(path, filename, distribution):
 
 
 def remove(path, package, distribution):
-    return subprocess.getoutput(
-        "reprepro -b {} remove {} {}".format(path, distribution, package))
+    return _reprepro(path, "remove {} {}".format(path, distribution, package))
