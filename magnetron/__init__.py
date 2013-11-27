@@ -5,6 +5,7 @@ import doctest
 def load_tests(loader, tests, ignore):
     import shutil
     import os.path
+    import glob
     import magnetron.repository
     magnetron.repository.base_path = "./.tests_srv"
     shutil.rmtree(magnetron.repository.base_path, ignore_errors=True)

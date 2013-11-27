@@ -46,6 +46,22 @@ def repositories():
     return list(sorted(Repository(i) for i in os.listdir(base_path)))
 
 
+class Package:
+
+    def __init__(self, spec):
+        self.spec = spec  # e.g.: raring|main|amd64: pep8 1.3.3-0ubuntu
+        try:
+            self.distribution = spec.split("|")[0]
+            self.architecture = spec.split("|")[2]
+            self.name = spec.split()[1]
+            self.version = spec.split()[2]
+        except IndexError:
+            raise ValueError("invalid spec: " + repr(spec))
+
+    def __repr__(self):
+        return "<Package {}>".format(repr(self.spec))
+
+
 class Repository:
 
     def __init__(self, name):
@@ -79,8 +95,8 @@ class Repository:
 
     def get(self, package, distribution):
         ''' get information about a package '''
-        if package in self.packages(distribution):
-            return package
+        if package in (i.name for i in self.packages(distribution)):
+            return [i for i in self.packages(distribution)]
         raise RepositoryError("package not found")
 
     def add(self, filename, distribution):
@@ -100,11 +116,15 @@ class Repository:
 
     def pull(self, other):
         ''' overwrite this repository '''
-        os.rename(other.path, self.path)
+        self.expunge()
+        shutil.copytree(other.path, self.path)
 
     def packages(self, distribution):
         ''' list packages per distribution '''
-        yield from magnetron.reprepro.list_packages(self.path, distribution)
+        for spec in sorted(magnetron.reprepro.list_packages(
+                self.path, distribution).split("\n")):
+            if spec:
+                yield Package(spec)
 
     def __repr__(self):
         return "<Repository '{}'>".format(self.name)

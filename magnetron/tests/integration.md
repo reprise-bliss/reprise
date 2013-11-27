@@ -64,3 +64,41 @@ We can delete repositories by using their `expunge()` method:
     FileNotFoundError: ...
     >>> repositories()
     []
+
+Let's create a repository and upload a package:
+
+    >>> filename = glob.glob("/var/cache/apt/archives/pep8_*_all.deb")[0]
+    >>> repository = Repository.create("pep8")
+    >>> repository.add(filename, "raring")
+
+    >>> list(repository.packages("raring"))
+    [<Package 'raring|main|amd64: pep8 1.3.3-0ubuntu1'>, ...]
+
+    >>> repository.get("pep8", "raring")
+    [<Package 'raring|main|amd64: pep8 1.3.3-0ubuntu1'>, ...]
+
+    >>> repository.get("does-not-exist", "raring")
+    Traceback (most recent call last):
+      ...
+    magnetron.repository.RepositoryError: package not found
+
+When we have a repository, we can use "pull" to update one repository to
+the state of another one. This works by overwriting the entirety of the
+contents of the target repository with those of the source repository.
+This process is used, for example, to update a "stable" repository using
+the "unstable" repository as a source.
+
+    >>> unstable = repository
+    >>> stable = Repository.create("pep8-stable")
+
+    >>> {i.name for i in unstable.packages("raring")}
+    {'pep8'}
+    >>> {i.name for i in stable.packages("raring")}
+    set()
+
+    >>> stable.pull(unstable)
+
+    >>> {i.name for i in unstable.packages("raring")}
+    {'pep8'}
+    >>> {i.name for i in stable.packages("raring")}
+    {'pep8'}
