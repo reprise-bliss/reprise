@@ -7,17 +7,10 @@ import magnetron.reprepro
 
 base_path = "/srv/magnetron"
 name_re = re.compile(r'[a-zA-Z][a-zA-Z0-9_]+')
-default_distributions = [
-    "precise",
-    "quantal",
-    "raring",
-    "saucy",
-    "trusty",
-]
 distributions_template = '''Origin: {origin}
 Label: {label}
-Suite: {suite}
-Codename: {codename}
+Suite: dist
+Codename: dist
 Version: 3.0
 Architectures: i386 amd64 armhf source
 Components: main
@@ -51,7 +44,6 @@ class Package:
     def __init__(self, spec):
         self.spec = spec  # e.g.: raring|main|amd64: pep8 1.3.3-0ubuntu
         try:
-            self.distribution = spec.split("|")[0]
             self.architecture = spec.split("|")[2]
             self.name = spec.split()[1]
             self.version = spec.split()[2]
@@ -81,34 +73,31 @@ class Repository:
         os.makedirs(os.path.join(base_path, name, "conf"))
         dist = os.path.join(base_path, name, "conf", "distributions")
         with open(dist, "w") as f:
-            for distribution in default_distributions:
-                f.write(distributions_template.format(
-                    origin=name,
-                    label=name,
-                    suite=distribution,
-                    codename=distribution,
-                    description=name,
-                    sign_with="FAKE_SIGNING_KEY",  # TODO
-                ).strip() + "\n")
-                f.write("\n")
+            f.write(distributions_template.format(
+                origin=name,
+                label=name,
+                description=name,
+                sign_with="FAKE_SIGNING_KEY",  # TODO
+            ).strip() + "\n")
+            f.write("\n")
         return cls(name)
 
-    def get(self, package, distribution):
+    def get(self, package):
         ''' get information about a package '''
-        if package in (i.name for i in self.packages(distribution)):
-            return [i for i in self.packages(distribution)]
+        if package in (i.name for i in self.packages()):
+            return [i for i in self.packages()]
         raise RepositoryError("package not found")
 
-    def add(self, filename, distribution):
+    def add(self, filename):
         ''' add a package to this repository '''
         if not os.path.exists(filename):
             raise FileNotFoundError(
                 "[Errno 2] No such file or directory: " + repr(filename))
-        magnetron.reprepro.include_deb(self.path, filename, distribution)
+        magnetron.reprepro.include_deb(self.path, filename)
 
-    def remove(self, package, distribution):
+    def remove(self, package):
         ''' remove a package from the repository '''
-        magnetron.reprepro.remove(self.path, package, distribution)
+        magnetron.reprepro.remove(self.path, package)
 
     def expunge(self):
         ''' delete this repository '''
@@ -119,10 +108,10 @@ class Repository:
         self.expunge()
         shutil.copytree(other.path, self.path)
 
-    def packages(self, distribution):
-        ''' list packages per distribution '''
+    def packages(self):
+        ''' list packages '''
         for spec in sorted(magnetron.reprepro.list_packages(
-                self.path, distribution).split("\n")):
+                self.path).split("\n")):
             if spec:
                 yield Package(spec)
 

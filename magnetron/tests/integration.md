@@ -69,15 +69,12 @@ Let's create a repository and upload a package:
 
     >>> filename = glob.glob("/var/cache/apt/archives/pep8_*_all.deb")[0]
     >>> repository = Repository.create("pep8")
-    >>> repository.add(filename, "raring")
+    >>> repository.add(filename)
 
-    >>> list(repository.packages("raring"))
-    [<Package 'raring|main|amd64: pep8 1.3.3-0ubuntu1'>, ...]
+    >>> list(repository.packages())
+    [<Package '...|main|amd64: pep8 1.3.3-0ubuntu1'>, ...]
 
-    >>> repository.get("pep8", "raring")
-    [<Package 'raring|main|amd64: pep8 1.3.3-0ubuntu1'>, ...]
-
-    >>> repository.get("does-not-exist", "raring")
+    >>> repository.get("does-not-exist")
     Traceback (most recent call last):
       ...
     magnetron.repository.RepositoryError: package not found
@@ -91,14 +88,14 @@ the "unstable" repository as a source.
     >>> unstable = repository
     >>> stable = Repository.create("pep8-stable")
 
-    >>> {i.name for i in unstable.packages("raring")}
+    >>> {i.name for i in unstable.packages()}
     {'pep8'}
-    >>> {i.name for i in stable.packages("raring")}
+    >>> {i.name for i in stable.packages()}
     set()
 
     >>> stable.pull(unstable)
 
-    >>> {i.name for i in unstable.packages("raring")}
+    >>> {i.name for i in unstable.packages()}
     {'pep8'}
-    >>> {i.name for i in stable.packages("raring")}
+    >>> {i.name for i in stable.packages()}
     {'pep8'}

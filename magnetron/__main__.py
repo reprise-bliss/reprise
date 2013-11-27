@@ -3,10 +3,10 @@ magnetron
 
 Usage:
     magnetron init [<repository>]
-    magnetron show [<repository> <distribution> [<package>]]
+    magnetron show [<repository> [<package>]]
     magnetron pull [--dry-run] [<user>@]<host> <repository>
-    magnetron upload <repository> <distribution> <file>
-    magnetron delete <repository> [<distribution> <package>]
+    magnetron upload <repository> <file>
+    magnetron delete <repository> [<package>]
     magnetron update <source-repository> <target-repository>
 
 Options:
@@ -18,7 +18,8 @@ import sys, os
 import docopt
 
 from magnetron.remote import Remote, RemoteError
-from magnetron.repository import Repository, RepositoryError, initialize
+from magnetron.repository import Repository, RepositoryError
+from magnetron.repository import initialize, repositories
 
 
 def init(repository=None):
@@ -35,25 +36,33 @@ def init(repository=None):
         sys.exit(1)
 
 
-def show(repository=None, distribution=None, package=None):
-    if repository is None and distribution is None and package is None:
+def show(repository=None, package=None):
+    if repository is None and package is None:
         try:
-            print("guru meditation")
+            for repository in repositories():
+                print(repository.name)
         except RepositoryError as e:
             print(e, file=sys.stderr)
             sys.exit(1)
-    elif package is None and distribution is not None:
-        for i in Repository(repository).packages(distribution):
-            print(i)
-    elif package is not None:
-        print(Repository(repository).get(package, distribution))
+    elif package is None:
+        try:
+            for i in Repository(repository).packages():
+                print(i)
+        except RepositoryError as e:
+            print(e, file=sys.stderr)
+            sys.exit(1)
     else:
-        docopt.docopt(__doc__, argv=[])  # raises SystemExit
+        try:
+            for i in Repository(repository).get(package):
+                print(i)
+        except RepositoryError as e:
+            print(e, file=sys.stderr)
+            sys.exit(1)
 
 
-def upload(repository, distribution, filename):
+def upload(repository, filename):
     try:
-        Repository(repository).add(filename, distribution)
+        Repository(repository).add(filename)
     except RepositoryError as e:
         print(e, file=sys.stderr)
         sys.exit(1)
@@ -62,12 +71,12 @@ def upload(repository, distribution, filename):
         sys.exit(1)
 
 
-def delete(repository, distribution=None, package=None):
+def delete(repository, package=None):
     try:
         if package is None:
             Repository(repository).expunge()
         else:
-            Repository(repository).remove(package, distribution)
+            Repository(repository).remove(package)
     except RepositoryError as e:
         print(e, file=sys.stderr)
         sys.exit(1)
@@ -102,11 +111,11 @@ def main(argv=None):
     if args["init"]:
         init(args["<repository>"])
     elif args["show"]:
-        show(args["<repository>"], args["<distribution>"], args["<package>"])
+        show(args["<repository>"], args["<package>"])
     elif args["upload"]:
-        upload(args["<repository>"], args["<distribution>"], args["<file>"])
+        upload(args["<repository>"], args["<file>"])
     elif args["delete"]:
-       delete(args["<repository>"], args["<distribution>"], args["<package>"])
+       delete(args["<repository>"], args["<package>"])
     elif args["update"]:
        update(args["<source-repository>"], args["<target-repository>"])
     elif args["pull"]:
