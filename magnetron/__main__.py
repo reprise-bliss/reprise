@@ -4,6 +4,7 @@ magnetron
 Usage:
     magnetron init [<repository>]
     magnetron show [<repository> <distribution> [<package>]]
+    magnetron pull [--dry-run] [<user>@]<host> <repository>
     magnetron upload <repository> <distribution> <file>
     magnetron delete <repository> [<distribution> <package>]
     magnetron update <source-repository> <target-repository>
@@ -13,9 +14,10 @@ Options:
 
 '''
 
-import sys
+import sys, os
 import docopt
 
+from magnetron.remote import Remote, RemoteError
 from magnetron.repository import Repository, RepositoryError, initialize
 
 
@@ -81,6 +83,20 @@ def update(source_repository, target_repository):
         sys.exit(1)
 
 
+def pull(host, repository, user=None, dry_run=False):
+    user = user or os.getlogin()
+    remote = Remote(user, host, repository)
+    try:
+        if dry_run:
+            remote.packages()
+        else:
+            remote.synchronize()
+            # sign all repos
+    except RemoteError as e:
+        print(e, file=sys.stderr)
+        sys.exit(1)
+
+
 def main(argv=None):
     args = docopt.docopt(__doc__, argv=argv)
     if args["init"]:
@@ -93,6 +109,9 @@ def main(argv=None):
        delete(args["<repository>"], args["<distribution>"], args["<package>"])
     elif args["update"]:
        update(args["<source-repository>"], args["<target-repository>"])
+    elif args["pull"]:
+       pull(args["<host>"], args["<repository>"], args["<user>@"],
+            bool(args["--dry-run"]))
     else:
         raise ValueError("invalid arguments")
 
