@@ -8,6 +8,21 @@ The API of the repository class (`magnetron.repository.Repository`) is quite
 similar to the command line api implemented in (`magnetron.__main__`), which
 is tested separately.
 
+## GPG
+
+Before we get into Magnetron itself, we need to look at GPG. Magnetron uses
+the default GPG key pair to sign packages, and any user wanting to download
+packages needs to add the public key using `apt-key`.
+
+    >>> print(get_default_public_key())
+    -----BEGIN PGP PUBLIC KEY BLOCK-----
+    Version: GnuPG v1.4.12 (GNU/Linux)
+    <BLANKLINE>
+    mQINBFGTQwgBEADfsu4HiJwgsCJggMmK+WFnppltqE...
+
+    >>> get_default_key_id()
+    '3F479202'
+
 ## Initializing the host
 
 Magnetron stores all of the data in `/srv/magnetron`, which we will remove

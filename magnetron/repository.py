@@ -2,6 +2,7 @@ import os
 import re
 import shutil
 
+import magnetron.gpg
 import magnetron.reprepro
 
 
@@ -27,6 +28,8 @@ def initialize():
     if os.path.exists(base_path):
         raise RepositoryError("already initialized")
     os.makedirs(base_path)
+    with open(os.path.join(base_path, "public.key"), "w") as f:
+        f.write(magnetron.gpg.get_default_public_key())
 
 
 def check_name(name):
@@ -36,7 +39,9 @@ def check_name(name):
 
 
 def repositories():
-    return list(sorted(Repository(i) for i in os.listdir(base_path)))
+    ls = [i for i in os.listdir(base_path)
+          if os.path.isdir(os.path.join(base_path, i))]
+    return list(sorted((Repository(i) for i in ls), key=lambda i: i.name))
 
 
 class Package:
@@ -77,7 +82,7 @@ class Repository:
                 origin=name,
                 label=name,
                 description=name,
-                sign_with="FAKE_SIGNING_KEY",  # TODO
+                sign_with=magnetron.gpg.get_default_key_id(),
             ).strip() + "\n")
             f.write("\n")
         return cls(name)

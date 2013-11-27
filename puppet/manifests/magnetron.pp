@@ -1,6 +1,7 @@
 Exec {
   path => "/bin:/usr/bin:/sbin:/usr/sbin",
   user => "root",
+  logoutput => on_failure,
 }
 
 Package {
@@ -43,4 +44,21 @@ exec { "update docopt":
 }
 package { "python3-docopt":
   require => Exec["update docopt"],
+}
+
+# import gpg test keys
+
+exec { "import private key":
+  command => "gpg --allow-secret-key-import --import \
+      /vagrant/magnetron/tests/private.key",
+  unless => "gpg --list-secret-keys | grep 3F479202",
+  user => "vagrant",
+  environment => ["HOME=/home/vagrant/"],
+}
+
+exec { "gpg --export -a > /home/vagrant/public.gpg":
+  creates => "/home/vagrant/public.gpg",
+  user => "vagrant",
+  environment => ["HOME=/home/vagrant/"],
+  require => Exec["import private key"],
 }
