@@ -63,6 +63,7 @@ After initializing the file system structure, we can start adding repositories:
     >>> repositories()  # n.b: this is defined in magnetron.repository
     [<Repository 'test'>]
 
+
 A repository also comes with its configuration, generated from templates:
 
     >>> os.listdir(repository.path)

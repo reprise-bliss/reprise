@@ -5,6 +5,7 @@ Usage:
     magnetron init [<repository>]
     magnetron show [<repository> [<package>]]
     magnetron pull [--dry-run] [<user>@]<host> <remote-repository> <repository>
+    magnetron source <repository>
     magnetron upload <repository> <file>
     magnetron delete <repository> [<package>]
     magnetron update <source-repository> <repository>
@@ -62,6 +63,18 @@ def show(repository=None, package=None):
         except RepositoryError as e:
             print(e, file=sys.stderr)
             sys.exit(1)
+
+
+def source(repository):
+    try:
+        print("deb ssh://{user}@{host}:{path} dist main".format(
+            user=os.getlogin(),
+            host="localhost",
+            path=os.path.abspath(Repository(repository).path),
+        ))
+    except RepositoryError as e:
+        print(e, file=sys.stderr)
+        sys.exit(1)
 
 
 def upload(repository, filename):
@@ -122,6 +135,8 @@ def main(argv=None):
         delete(args["<repository>"], args["<package>"])
     elif args["update"]:
         update(args["<source-repository>"], args["<repository>"])
+    elif args["source"]:
+        source(args["<repository>"])
     elif args["pull"]:
         pull(args["<host>"], args["<remote-repository>"],
              args["<repository>"], args["<user>@"],

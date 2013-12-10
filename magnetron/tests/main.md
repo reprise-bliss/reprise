@@ -14,6 +14,11 @@ Command: `magnetron init <repository>`
 
     >>> main("init", "test-repo")
 
+Command: `magnetron source <repository>`
+
+    >>> main("source", "test-repo")
+    deb ssh://...@localhost:/home/vagrant/magnetron/.tests_srv/test-repo dist main
+
 Command: `magnetron show`
 
     >>> main("show")
