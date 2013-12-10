@@ -1,6 +1,70 @@
 .TH magnetron 1 "November 2013" Linux "User Manuals"
 .SH NAME
 magnetron - debian package repository manager
+.SH SYNOPSIS
+.br
+magnetron init [<repository>]
+.br
+magnetron show [<repository> [<package>]]
+.br
+magnetron pull [\-s] [<user>@]<host> <remote\-repository> <repository>
+.br
+magnetron source <repository>
+.br
+magnetron include <repository> <filename>
+.br
+magnetron delete <repository> [<package>]
+.br
+magnetron update <source\-repository> <repository>
+.SH OPTIONS
+.TP
+\fB\-\-dry\-run\fR
+simulate pull without copying anything
+.TP
+\fB\-\-help\fR \fB\-h\fR
+show this screen and exit
+.TP
+\fB\-\-version\fR
+show version number and exit
+.SH COMMANDS
+.TP
+\fBinit\fR
+Create the directories and files required to host debian
+packages on this server
+.TP
+\fBinit <repository>\fR
+Create a new repository
+.TP
+\fBshow\fR
+List the repositories hosted on this server
+.TP
+\fBshow <repository>\fR
+List all packages in the repository
+.TP
+\fBshow <repository> <package>\fR
+Show detailed information about a package
+.TP
+\fBpull [<user>@]<host> <remote\-repository> <repository>\fR
+Copy the entire contents of a remote repository into a local repository,
+overwriting the contents of the local repository
+.TP
+\fBsource <repository>\fR
+Display the source line for a repository as it should appear
+in /etc/sources.list
+.TP
+\fBinclude <repository> <filename>\fR
+Add a package to a repository, where <filename> is relative
+to '/srv/magnetron/incoming/'
+.TP
+\fBdelete <repository>\fR
+Delete an entire repository
+.TP
+\fBdelete <repository> <package>\fR
+Delete a specific package from a repiository
+.TP
+\fBupdate <source\-repository> <repository>\fR
+Copy the entire contents of a local repository into another repository,
+overwriting the contents of the target repository
 .SH AUTHOR
 devbliss GmbH <info@devbliss.com>
 .SH BUGS
