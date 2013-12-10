@@ -1,5 +1,6 @@
-import io
 import doctest
+import io
+import pkg_resources
 
 
 def load_tests(loader, tests, ignore):
@@ -41,3 +42,6 @@ def load_tests(loader, tests, ignore):
             fn, globs=globs,
             optionflags=doctest.ELLIPSIS | doctest.NORMALIZE_WHITESPACE))
     return tests
+
+
+__version__ = pkg_resources.get_distribution("magnetron").version

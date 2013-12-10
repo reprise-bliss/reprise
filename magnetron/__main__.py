@@ -4,14 +4,15 @@ magnetron
 Usage:
     magnetron init [<repository>]
     magnetron show [<repository> [<package>]]
-    magnetron pull [--dry-run] [<user>@]<host> <remote-repository>\
- <local-repository>
+    magnetron pull [--dry-run] [<user>@]<host> <remote-repository> <repository>
     magnetron upload <repository> <file>
     magnetron delete <repository> [<package>]
-    magnetron update <source-repository> <target-repository>
+    magnetron update <source-repository> <repository>
 
 Options:
-    --help -h   show this screen and exit
+    --dry-run     simulate pull without copying anything
+    --help -h     show this screen and exit
+    --version     show version number and exit
 
 '''
 
@@ -22,6 +23,7 @@ import docopt
 from magnetron.remote import Remote, RemoteError
 from magnetron.repository import Repository, RepositoryError
 from magnetron.repository import initialize, repositories
+from magnetron import __version__
 
 
 def init(repository=None):
@@ -109,7 +111,7 @@ def pull(host, remote_repository, local_repository, user=None, dry_run=False):
 
 
 def main(argv=None):
-    args = docopt.docopt(__doc__, argv=argv)
+    args = docopt.docopt(__doc__, argv=argv, version=__version__)
     if args["init"]:
         init(args["<repository>"])
     elif args["show"]:
@@ -119,11 +121,11 @@ def main(argv=None):
     elif args["delete"]:
         delete(args["<repository>"], args["<package>"])
     elif args["update"]:
-        update(args["<source-repository>"], args["<target-repository>"])
+        update(args["<source-repository>"], args["<repository>"])
     elif args["pull"]:
         pull(args["<host>"], args["<remote-repository>"],
-             args["<local-repository>"], args["<user>@"],
-             bool(args["--dry-run"]))
+             args["<repository>"], args["<user>@"],
+             args["--dry-run"])
     else:  # pragma: no cover
         raise ValueError("invalid arguments")
 
