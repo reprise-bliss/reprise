@@ -30,12 +30,13 @@ def initialize():
     if os.path.exists(base_path):
         raise RepositoryError("already initialized")
     os.makedirs(base_path)
+    os.makedirs(os.path.join(base_path, "incoming"))
     with open(os.path.join(base_path, "public.key"), "w") as f:
         f.write(magnetron.gpg.get_default_public_key())
 
 
 def check_name(name):
-    if not name_re.match(name):
+    if not name_re.match(name) or name in ("incoming", ):
         raise RepositoryError("invalid name " + repr(name))
     return name
 
@@ -43,6 +44,7 @@ def check_name(name):
 def repositories():
     ls = [i for i in os.listdir(base_path)
           if os.path.isdir(os.path.join(base_path, i))]
+    ls = [i for i in ls if i not in ("incoming", )]
     return list(sorted((Repository(i) for i in ls), key=lambda i: i.name))
 
 

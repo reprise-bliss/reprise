@@ -93,13 +93,17 @@ We can delete repositories by using their `expunge()` method:
     >>> repositories()
     []
 
-Let's create a repository and upload a package:
+Let's create a repository and add a package:
 
     >>> Repository("../this-name-is-invalid")
     Traceback (most recent call last):
       ...
     magnetron.repository.RepositoryError: invalid name ...
 
+    >>> Repository("incoming")
+    Traceback (most recent call last):
+      ...
+    magnetron.repository.RepositoryError: invalid name ...
 
     >>> filename = glob.glob("/var/cache/apt/archives/pep8_*_all.deb")[0]
     >>> repository = Repository.create("pep8")

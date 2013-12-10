@@ -38,15 +38,16 @@ Command: `magnetron show <repository> <package>`
     >>> main("show", "test-repo", "hello")
     package not found
 
-Command: `magnetron upload <repository> <file>`
+Command: `magnetron include <repository> <filename>`
 
     >>> filename = glob.glob("/var/cache/apt/archives/pep8_*_all.deb")[0]
-    >>> main("upload", "test-repo", filename)
+    >>> _ = shutil.copy(filename, os.path.join(base_path, "incoming"))
+    >>> main("include", "test-repo", os.path.basename(filename))
 
-    >>> main("upload", "test-repo", filename + ".broken")
+    >>> main("include", "test-repo", filename + ".broken")
     [Errno 2] No such file or directory: ...
 
-    >>> main("upload", "doesn't exist", filename)
+    >>> main("include", "doesn't exist", filename)
     repository doesn't exist
 
     >>> main("show", "test-repo", "pep8")
@@ -84,7 +85,7 @@ Command: `magnetron delete <repository>`
 Command: `magnetron pull`
 
     >>> main("init", "remote")
-    >>> main("upload", "remote", filename)
+    >>> main("include", "remote", filename)
 
     >>> main("pull", "--dry-run", "localhost", "remote", "local")
     receiving incremental file list
