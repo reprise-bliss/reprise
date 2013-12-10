@@ -19,6 +19,7 @@ Options:
 
 import sys
 import os
+import pwd
 import docopt
 
 from magnetron.remote import Remote, RemoteError
@@ -68,7 +69,7 @@ def show(repository=None, package=None):
 def source(repository):
     try:
         print("deb ssh://{user}@{host}:{path} dist main".format(
-            user=os.getlogin(),
+            user=pwd.getpwuid(os.getuid()).pw_name,
             host="localhost",
             path=os.path.abspath(Repository(repository).path),
         ))
@@ -112,7 +113,7 @@ def update(source_repository, target_repository):
 
 
 def pull(host, remote_repository, local_repository, user=None, dry_run=False):
-    user = user or os.getlogin()
+    user = user or pwd.getpwuid(os.getuid()).pw_name
     host = host.split("@")[-1]
     remote = Remote(user, host, remote_repository, local_repository)
     try:
