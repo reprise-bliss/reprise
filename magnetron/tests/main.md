@@ -41,7 +41,8 @@ Command: `magnetron show <repository> <package>`
 Command: `magnetron include <repository> <filename>`
 
     >>> filename = glob.glob("/var/cache/apt/archives/pep8_*_all.deb")[0]
-    >>> main("include", "test-repo", filename)
+    >>> _ = shutil.copy(filename, os.path.join(base_path, "incoming"))
+    >>> main("include", "test-repo", os.path.basename(filename))
 
     >>> main("include", "test-repo", filename + ".broken")
     [Errno 2] No such file or directory: ...

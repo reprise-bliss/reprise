@@ -105,7 +105,6 @@ Let's create a repository and add a package:
       ...
     magnetron.repository.RepositoryError: invalid name ...
 
-
     >>> filename = glob.glob("/var/cache/apt/archives/pep8_*_all.deb")[0]
     >>> repository = Repository.create("pep8")
 
