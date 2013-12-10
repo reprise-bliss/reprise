@@ -19,6 +19,9 @@ Command: `magnetron source <repository>`
     >>> main("source", "test-repo")
     deb ssh://...@localhost:/home/vagrant/magnetron/.tests_srv/test-repo dist main
 
+    >>> main("source", "does-not-exist")
+    repository doesn't exist
+
 Command: `magnetron show`
 
     >>> main("show")
