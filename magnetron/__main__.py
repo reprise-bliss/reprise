@@ -4,14 +4,14 @@ magnetron
 Usage:
     magnetron init [<repository>]
     magnetron show [<repository> [<package>]]
-    magnetron pull [--dry-run] [<user>@]<host> <remote-repository> <repository>
+    magnetron pull [-s] [<user>@]<host> <remote-repository> <repository>
     magnetron source <repository>
-    magnetron upload <repository> <file>
+    magnetron include <repository> <filename>
     magnetron delete <repository> [<package>]
     magnetron update <source-repository> <repository>
 
 Options:
-    --dry-run     simulate pull without copying anything
+    --dry-run -s  simulate pull without copying anything
     --help -h     show this screen and exit
     --version     show version number and exit
 
@@ -23,7 +23,7 @@ import docopt
 
 from magnetron.remote import Remote, RemoteError
 from magnetron.repository import Repository, RepositoryError
-from magnetron.repository import initialize, repositories
+from magnetron.repository import initialize, repositories, base_path
 from magnetron import __version__
 
 
@@ -77,8 +77,10 @@ def source(repository):
         sys.exit(1)
 
 
-def upload(repository, filename):
+def include(repository, filename):
     try:
+        if not os.path.isabs(filename):
+            filename = os.path.join(base_path, "incoming", filename)
         Repository(repository).add(filename)
     except RepositoryError as e:
         print(e, file=sys.stderr)
@@ -129,8 +131,8 @@ def main(argv=None):
         init(args["<repository>"])
     elif args["show"]:
         show(args["<repository>"], args["<package>"])
-    elif args["upload"]:
-        upload(args["<repository>"], args["<file>"])
+    elif args["include"]:
+        include(args["<repository>"], args["<filename>"])
     elif args["delete"]:
         delete(args["<repository>"], args["<package>"])
     elif args["update"]:
