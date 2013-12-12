@@ -68,7 +68,7 @@ def show(repository=None, package=None):
 
 def source(repository):
     try:
-        print("deb ssh://{user}@{host}:{path} dist main".format(
+        print("deb ssh://{user}@{host}:{path} /".format(
             user=pwd.getpwuid(os.getuid()).pw_name,
             host=socket.getfqdn(),
             path=os.path.abspath(Repository(repository).path),
