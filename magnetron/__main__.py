@@ -20,6 +20,7 @@ Options:
 import sys
 import os
 import pwd
+import socket
 import docopt
 
 from magnetron.remote import Remote, RemoteError
@@ -69,7 +70,7 @@ def source(repository):
     try:
         print("deb ssh://{user}@{host}:{path} dist main".format(
             user=pwd.getpwuid(os.getuid()).pw_name,
-            host="localhost",
+            host=socket.getfqdn(),
             path=os.path.abspath(Repository(repository).path),
         ))
     except RepositoryError as e:
