@@ -67,15 +67,7 @@ After initializing the file system structure, we can start adding repositories:
 A repository also comes with its configuration, generated from templates:
 
     >>> os.listdir(repository.path)
-    ['conf']
-    >>> with open(os.path.join(repository.path, "conf", "distributions")) as f:
-    ...     print(f.read())
-    ...
-    Origin: ...
-    Label: test
-    ...
-    SignWith: ...
-
+    ['Packages', 'Release', 'Release.gpg']
     >>> Repository("does-not-exist")
     Traceback (most recent call last):
       ...
@@ -116,10 +108,10 @@ Let's create a repository and add a package:
     >>> repository.add(filename)
 
     >>> list(repository.packages())
-    [<Package '...|main|amd64: pep8 1.3.3-0ubuntu1'>, ...]
+    [<Package pep8 (1.3.3-0ubuntu1)>]
 
     >>> list(repository.get("pep8"))
-    [<Package '...|main|amd64: pep8 1.3.3-0ubuntu1'>, ...]
+    [<Package pep8 (1.3.3-0ubuntu1)>]
 
     >>> repository.get("does-not-exist")
     Traceback (most recent call last):
@@ -170,15 +162,12 @@ the remote host is given. Firstly we do a "dry run":
     >>> remote.packages()
     receiving incremental file list
     pep8/
-    pep8/conf/
-    pep8/conf/distributions
-    ...
-    pep8/dists/
-    ...
-    pep8/pool/main/p/pep8/pep8...all.deb
+    pep8/Packages
+    pep8/Release
+    pep8/Release.gpg
+    pep8/pep8_..._all.deb
     <BLANKLINE>
-    sent ... bytes  received ... bytes  ... bytes/sec
-    total size is ...  speedup is ... (DRY RUN)
+    ...
 
 This will synchronize the two repositories (`pep8` and
 `rsync://localhost/../pep8-synced`):

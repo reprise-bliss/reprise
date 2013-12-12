@@ -51,7 +51,7 @@ Command: `magnetron include <repository> <filename>`
     repository doesn't exist
 
     >>> main("show", "test-repo", "pep8")
-    pep8 ...-0ubuntu1 (amd64, armhf, i386)
+    pep8 ...-0ubuntu1
 
 Command: `magnetron update <source-repository> <target-repository>`
 
@@ -90,11 +90,13 @@ Command: `magnetron pull`
     >>> main("pull", "--dry-run", "localhost", "remote", "local")
     receiving incremental file list
     remote/
+    remote/Packages
+    remote/Release
+    remote/Release.gpg
+    remote/pep8_1.3.3-0ubuntu1_all.deb
+    <BLANKLINE>
     ...
-    remote/pool/
-    ...
-    total size is ...  speedup is ... (DRY RUN)
 
     >>> main("pull", "localhost", "remote", "local")
     >>> main("show", "local")
-    pep8 1.3.3-0ubuntu1
+    pep8 ...

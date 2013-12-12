@@ -59,8 +59,7 @@ def show(repository=None, package=None):
     else:
         try:
             packages = Repository(repository).get(package)
-            print(packages[0].name, packages[0].version,
-                  "(" + ", ".join(i.architecture for i in packages) + ")")
+            print(packages[0].name, packages[0].version)
         except RepositoryError as e:
             print(e, file=sys.stderr)
             sys.exit(1)

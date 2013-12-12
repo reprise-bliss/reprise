@@ -29,7 +29,7 @@ package { "python3-setuptools": }
 package { "dpkg-dev": }
 package { "debhelper": }
 package { "lintian": }
-package { "reprepro": }
+package { "apt-utils": }
 package { "pep8": }
 
 # install docopt

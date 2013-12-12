@@ -4,7 +4,7 @@ import shutil
 import glob
 
 import magnetron.gpg
-import magnetron.reprepro
+import magnetron.apt
 
 
 base_path = "/srv/magnetron"
@@ -29,7 +29,6 @@ class RepositoryError(Exception):
 def initialize():
     if os.path.exists(base_path):
         raise RepositoryError("already initialized")
-    os.makedirs(base_path)
     os.makedirs(os.path.join(base_path, "incoming"))
     with open(os.path.join(base_path, "public.key"), "w") as f:
         f.write(magnetron.gpg.get_default_public_key())
@@ -50,14 +49,11 @@ def repositories():
 
 class Package:
 
-    def __init__(self, spec):
-        self.spec = spec  # e.g.: raring|main|amd64: pep8 1.3.3-0ubuntu
-        self.architecture = spec.split("|")[2].split(":")[0]
-        self.name = spec.split()[1]
-        self.version = spec.split()[2]
+    def __init__(self, name, version):
+        self.name, self.version = name, version
 
     def __repr__(self):
-        return "<Package {}>".format(repr(self.spec))
+        return "<Package {} ({})>".format(self.name, self.version)
 
 
 class Repository:
@@ -76,16 +72,8 @@ class Repository:
             raise RepositoryError("not initialized")
         if os.path.exists(os.path.join(base_path, check_name(name))):
             raise RepositoryError("repository exists")
-        os.makedirs(os.path.join(base_path, name, "conf"))
-        dist = os.path.join(base_path, name, "conf", "distributions")
-        with open(dist, "w") as f:
-            f.write(distributions_template.format(
-                origin=name,
-                label=name,
-                description=name,
-                sign_with=magnetron.gpg.get_default_key_id(),
-            ).strip() + "\n")
-            f.write("\n")
+        os.makedirs(os.path.join(base_path, name))
+        magnetron.apt.run(os.path.join(base_path, name))
         return cls(name)
 
     def get(self, package):
@@ -99,11 +87,11 @@ class Repository:
         if not os.path.exists(filename):
             raise FileNotFoundError(
                 "[Errno 2] No such file or directory: " + repr(filename))
-        magnetron.reprepro.include_deb(self.path, filename)
+        magnetron.apt.include_deb(self.path, filename)
 
     def remove(self, package):
         ''' remove a package from the repository '''
-        magnetron.reprepro.remove(self.path, package)
+        magnetron.apt.remove(self.path, package)
 
     def expunge(self):
         ''' delete this repository '''
@@ -116,17 +104,12 @@ class Repository:
 
     def packages(self):
         ''' list packages '''
-        for spec in sorted(magnetron.reprepro.list_packages(
-                self.path).split("\n")):
-            if spec:
-                yield Package(spec)
+        for name, version in sorted(magnetron.apt.list_packages(self.path)):
+            yield Package(name, version)
 
     def reinitialize(self):
         ''' re-add the packages in a broken repository '''
-        packages = glob.glob(os.path.join(
-            self.path, "**/**/**/**/**/*.deb"))
-        for i in packages:
-            self.add(i)
+        magnetron.apt.run(self.path)
 
     def __repr__(self):
         return "<Repository '{}'>".format(self.name)
