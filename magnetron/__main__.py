@@ -80,13 +80,17 @@ def source(repository):
 
 def include(repository, filename):
     try:
-        if not os.path.isabs(filename):
-            filename = os.path.join(base_path, "incoming", filename)
-        Repository(repository).add(filename)
+        if os.path.isabs(filename):
+            package = filename
+        else:
+            package = os.path.join(base_path, "incoming", filename)
+            if not os.path.exists(package) and os.path.exists(filename):
+                package = filename
+        Repository(repository).add(package)
     except RepositoryError as e:
         print(e, file=sys.stderr)
         sys.exit(1)
-    except FileNotFoundError as e:
+    except OSError as e:
         print(e, file=sys.stderr)
         sys.exit(1)
 

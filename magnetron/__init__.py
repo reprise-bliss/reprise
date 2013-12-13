@@ -1,6 +1,7 @@
 import doctest
 import io
 import pkg_resources
+import sys
 
 
 def load_tests(loader, tests, ignore):
@@ -18,7 +19,6 @@ def load_tests(loader, tests, ignore):
 
     def main(*a):
         try:
-            import sys
             stdout, stderr = sys.stdout, sys.stderr
             sys.stdout, sys.stderr = io.StringIO(), io.StringIO()
             _main(list(a))
@@ -35,12 +35,18 @@ def load_tests(loader, tests, ignore):
     globs = {}
     globs.update({k: v for k, v in globals().items()})
     globs.update({k: v for k, v in locals().items()})
+    select_test, anything = os.getenv("doctest"), False
     for fn in ["integration.md", "main.md"]:
+        if select_test is not None and fn not in select_test.split(":"):
+            continue
         fn = os.path.relpath(os.path.join(
             os.path.dirname(__file__), "..", "tests", fn))
         tests.addTests(doctest.DocFileSuite(
             fn, globs=globs,
             optionflags=doctest.ELLIPSIS | doctest.NORMALIZE_WHITESPACE))
+        anything = True
+    if not anything:
+        print("warning: no tests selected", file=sys.stderr)
     return tests
 
 

@@ -1,7 +1,6 @@
 import os
 import re
 import shutil
-import glob
 
 import magnetron.gpg
 import magnetron.apt
@@ -27,7 +26,7 @@ class RepositoryError(Exception):
 
 
 def initialize():
-    if os.path.exists(base_path):
+    if os.path.exists(os.path.join(base_path, "incoming")):
         raise RepositoryError("already initialized")
     os.makedirs(os.path.join(base_path, "incoming"))
     with open(os.path.join(base_path, "public.key"), "w") as f:
@@ -73,7 +72,7 @@ class Repository:
         if os.path.exists(os.path.join(base_path, check_name(name))):
             raise RepositoryError("repository exists")
         os.makedirs(os.path.join(base_path, name))
-        magnetron.apt.run(os.path.join(base_path, name))
+        magnetron.apt.update_repository(os.path.join(base_path, name))
         return cls(name)
 
     def get(self, package):
@@ -109,7 +108,7 @@ class Repository:
 
     def reinitialize(self):
         ''' re-add the packages in a broken repository '''
-        magnetron.apt.run(self.path)
+        magnetron.apt.update_repository(self.path)
 
     def __repr__(self):
         return "<Repository '{}'>".format(self.name)
