@@ -4,7 +4,7 @@ import pkg_resources
 import sys
 
 
-def load_tests(loader, tests, ignore):
+def load_tests(loader, tests, ignore):  # flake8: noqa
     import shutil
     import os.path
     import glob

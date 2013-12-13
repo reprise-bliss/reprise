@@ -25,12 +25,7 @@ packages needs to add the public key using `apt-key`.
 
 ## Initializing the host
 
-Magnetron stores all of the data in `/srv/magnetron`, which we will remove
-first of all:
-
-    >>> shutil.rmtree(base_path, ignore_errors=True)
-
-Right now, we can'r create repositories because the basic file structure
+Right now, we can't create repositories because the basic file structure
 hasn't been initialized yet:
 
     >>> Repository("test")
