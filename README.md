@@ -1,7 +1,7 @@
 # Reprise
 
 Reprise is an easy to use Debian repository and package management
-tool - a simple, easy to setup, and deamon-less software with an
+tool - a simple, easy to setup, and daemon-less software with an
 intuitive interface.
 
 Reprise is meant to be run on the actual package server, not the client
