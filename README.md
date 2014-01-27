@@ -6,7 +6,7 @@ intuitive interface.
 
 Reprise is meant to be run on the actual package server, not the client
 machine uploading and managing packages. This way an unnecessarily
-complicated client-server model is avoided. No deamon is running and
+complicated client-server model is avoided. No daemon is running and
 Reprise itself knows nothing about network communications.
 
 ## Feature overview
