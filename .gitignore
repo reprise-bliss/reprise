@@ -1,6 +1,6 @@
 /.vagrant
 __pycache__/
-magnetron.egg-info/
+reprise.egg-info/
 /build/
 /.tests_srv/
 .coverage

@@ -1,14 +1,14 @@
 '''
-magnetron
+reprise
 
 Usage:
-    magnetron init [<repository>]
-    magnetron show [<repository> [<package>]]
-    magnetron pull [-s] [<user>@]<host> <remote-repository> <repository>
-    magnetron source <repository>
-    magnetron include <repository> <filename>
-    magnetron delete <repository> [<package>]
-    magnetron update <source-repository> <repository>
+    reprise init [<repository>]
+    reprise show [<repository> [<package>]]
+    reprise pull [-s] [<user>@]<host> <remote-repository> <repository>
+    reprise source <repository>
+    reprise include <repository> <filename>
+    reprise delete <repository> [<package>]
+    reprise update <source-repository> <repository>
 
 Options:
     --dry-run -s  simulate pull without copying anything
@@ -23,10 +23,10 @@ import pwd
 import socket
 import docopt
 
-from magnetron.remote import Remote, RemoteError
-from magnetron.repository import Repository, RepositoryError
-from magnetron.repository import initialize, repositories, base_path
-from magnetron import __version__
+from reprise.remote import Remote, RemoteError
+from reprise.repository import Repository, RepositoryError
+from reprise.repository import initialize, repositories, base_path
+from reprise import __version__
 
 
 def init(repository=None):

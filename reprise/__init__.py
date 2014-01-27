@@ -7,14 +7,14 @@ def load_tests(loader, tests, ignore):
     import shutil
     import os.path
     import glob
-    import magnetron.repository
-    magnetron.repository.base_path = "./.tests_srv"
-    shutil.rmtree(magnetron.repository.base_path, ignore_errors=True)
-    from magnetron.repository import Repository, RepositoryError
-    from magnetron.repository import initialize, repositories, base_path
-    from magnetron.remote import Remote
-    from magnetron.gpg import get_default_public_key, get_default_key_id
-    from magnetron.__main__ import main as _main
+    import reprise.repository
+    reprise.repository.base_path = "./.tests_srv"
+    shutil.rmtree(reprise.repository.base_path, ignore_errors=True)
+    from reprise.repository import Repository, RepositoryError
+    from reprise.repository import initialize, repositories, base_path
+    from reprise.remote import Remote
+    from reprise.gpg import get_default_public_key, get_default_key_id
+    from reprise.__main__ import main as _main
 
     def main(*a):
         try:
@@ -44,4 +44,4 @@ def load_tests(loader, tests, ignore):
     return tests
 
 
-__version__ = pkg_resources.get_distribution("magnetron").version
+__version__ = pkg_resources.get_distribution("reprise").version
