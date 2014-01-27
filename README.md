@@ -28,7 +28,7 @@ on an EC2 instance.
 
 ## Installation
 
-To bootstrap Reprise you need to upload an initial package to a server and
+To bootstrap Reprise you need to upload the Reprise package to a server and
 install it using `gdebi` (*install gdebi-core, NOT the gdebi package*). From
 then on you can use Reprise to host it's own packages and this way update
 itself. Once Reprise is installed, you can initialize the server:
@@ -52,9 +52,9 @@ a local program and all commands will be sent to the server via SSH.
 ### Uploading Packages
 
 Uploading packages is simply done via `scp`. Copy the Debian package into
-`/srv/Reprise/incomming` like:
+`/srv/reprise/incoming` like:
 
-    scp <package> <user>@<host>:/srv/reprise/incomming/
+    scp <package> <user>@<host>:/srv/reprise/incoming/
 
 Afterwards run `reprise include <repository> <package>` to make the package
 available in your repository.
@@ -77,7 +77,7 @@ public access via HTTP is wanted a regular web server needs to be set up.
 The test suite is located in `reprise/tests/`. You can run the tests by
 typing `make test` (or `make coverage` to also ensure full code coverage).
 
-Rperise also comes with a Vagrantfile and Puppet manifest, letting you set
+Reprise also comes with a Vagrantfile and Puppet manifest, letting you set
 up a testing environment using [Vagrant](http://vagrantup.com):
 
     vagrant up
