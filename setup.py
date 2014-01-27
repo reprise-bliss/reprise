@@ -18,4 +18,13 @@ setup(
     data_files=[
         ("share/man/man1", ["debian/reprise.1"]),
     ],
+    classifiers=[
+        "License :: OSI Approved :: Apache Software License",
+        "Operating System :: POSIX :: Linux",
+        "Programming Language :: Python :: 3",
+        "Programming Language :: Python :: 3.2",
+        "Programming Language :: Python :: 3.3",
+        "Programming Language :: Python :: 3.4",
+        "Topic :: System :: Archiving :: Packaging",
+    ],
 )
