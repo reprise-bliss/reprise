@@ -1,16 +1,16 @@
-# Magnetron Main Integration Test
+# Reprise Main Integration Test
 
 This test will go over all of the available features of the command line API
 and run them on the local host. To prepare for this, the user executing this
 test must have write access to the `/srv/` directory.
 
-The API of the repository class (`magnetron.repository.Repository`) is quite
-similar to the command line api implemented in (`magnetron.__main__`), which
+The API of the repository class (`reprise.repository.Repository`) is quite
+similar to the command line api implemented in (`reprise.__main__`), which
 is tested separately.
 
 ## GPG
 
-Before we get into Magnetron itself, we need to look at GPG. Magnetron uses
+Before we get into Reprise itself, we need to look at GPG. Reprise uses
 the default GPG key pair to sign packages, and any user wanting to download
 packages needs to add the public key using `apt-key`.
 
@@ -25,7 +25,7 @@ packages needs to add the public key using `apt-key`.
 
 ## Initializing the host
 
-Magnetron stores all of the data in `/srv/magnetron`, which we will remove
+Reprise stores all of the data in `/srv/reprise`, which we will remove
 first of all:
 
     >>> shutil.rmtree(base_path, ignore_errors=True)
@@ -36,13 +36,13 @@ hasn't been initialized yet:
     >>> Repository("test")
     Traceback (most recent call last):
       ...
-    magnetron.repository.RepositoryError: not initialized
+    reprise.repository.RepositoryError: not initialized
     >>> Repository.create("test")
     Traceback (most recent call last):
       ...
-    magnetron.repository.RepositoryError: not initialized
+    reprise.repository.RepositoryError: not initialized
 
-We can now use `magnetron.repository.initialize()` to initialize the files
+We can now use `reprise.repository.initialize()` to initialize the files
 needed on the server:
 
     >>> os.path.exists(base_path)
@@ -53,14 +53,14 @@ needed on the server:
     >>> initialize()
     Traceback (most recent call last):
       ...
-    magnetron.repository.RepositoryError: already initialized
+    reprise.repository.RepositoryError: already initialized
 
 ## Managing repositories
 
 After initializing the file system structure, we can start adding repositories:
 
     >>> repository = Repository.create("test")
-    >>> repositories()  # n.b: this is defined in magnetron.repository
+    >>> repositories()  # n.b: this is defined in reprise.repository
     [<Repository 'test'>]
 
 
@@ -79,7 +79,7 @@ A repository also comes with its configuration, generated from templates:
     >>> Repository("does-not-exist")
     Traceback (most recent call last):
       ...
-    magnetron.repository.RepositoryError: repository doesn't exist
+    reprise.repository.RepositoryError: repository doesn't exist
 
 We can delete repositories by using their `expunge()` method:
 
@@ -98,12 +98,12 @@ Let's create a repository and add a package:
     >>> Repository("../this-name-is-invalid")
     Traceback (most recent call last):
       ...
-    magnetron.repository.RepositoryError: invalid name ...
+    reprise.repository.RepositoryError: invalid name ...
 
     >>> Repository("incoming")
     Traceback (most recent call last):
       ...
-    magnetron.repository.RepositoryError: invalid name ...
+    reprise.repository.RepositoryError: invalid name ...
 
     >>> filename = glob.glob("/var/cache/apt/archives/pep8_*_all.deb")[0]
     >>> repository = Repository.create("pep8")
@@ -124,12 +124,12 @@ Let's create a repository and add a package:
     >>> repository.get("does-not-exist")
     Traceback (most recent call last):
       ...
-    magnetron.repository.RepositoryError: package not found
+    reprise.repository.RepositoryError: package not found
 
     >>> Repository.create("pep8")
     Traceback (most recent call last):
       ...
-    magnetron.repository.RepositoryError: repository exists
+    reprise.repository.RepositoryError: repository exists
 
 Of course we can remove packages:
 
@@ -186,7 +186,7 @@ This will synchronize the two repositories (`pep8` and
     >>> Repository("pep8-synced")
     Traceback (most recent call last):
       ...
-    magnetron.repository.RepositoryError: repository doesn't exist
+    reprise.repository.RepositoryError: repository doesn't exist
 
     >>> remote.synchronize()
     >>> {i.name for i in Repository("pep8-synced").packages()}

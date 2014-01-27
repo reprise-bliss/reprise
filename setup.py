@@ -1,21 +1,21 @@
 from setuptools import setup
 
 setup(
-    name="magnetron",
+    name="reprise",
     version="0.1.0",
     packages=[
-        "magnetron",
+        "reprise",
     ],
-    test_suite="magnetron",
+    test_suite="reprise",
     install_requires={
         "docopt",
     },
     entry_points={
         "console_scripts": [
-            "magnetron = magnetron.__main__:main",
+            "reprise = reprise.__main__:main",
         ],
     },
     data_files=[
-        ("share/man/man1", ["debian/magnetron.1"]),
+        ("share/man/man1", ["debian/reprise.1"]),
     ],
 )

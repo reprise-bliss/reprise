@@ -1,7 +1,7 @@
 Format: http://www.debian.org/doc/packaging-manuals/copyright-format/1.0/
-Upstream-Name: magnetron
+Upstream-Name: reprise
 Upstream-Contact: devbliss GmbH, <info@devbliss.com>
-Source: https://github.com/devbliss/magnetron
+Source: https://github.com/devbliss/reprise
 
 Files: *
 Copyright: 2013, devbliss GmbH, <info@devbliss.com>

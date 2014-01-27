@@ -1,7 +1,7 @@
 import os
 import subprocess
 
-from magnetron.repository import Repository, RepositoryError, base_path
+from reprise.repository import Repository, RepositoryError, base_path
 
 
 class RemoteError(Exception):

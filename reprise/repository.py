@@ -3,11 +3,11 @@ import re
 import shutil
 import glob
 
-import magnetron.gpg
-import magnetron.reprepro
+import reprise.gpg
+import reprise.reprepro
 
 
-base_path = "/srv/magnetron"
+base_path = "/srv/reprise"
 name_re = re.compile(r'[a-zA-Z][a-zA-Z0-9_]+')
 distributions_template = '''Origin: {origin}
 Label: {label}
@@ -32,7 +32,7 @@ def initialize():
     os.makedirs(base_path)
     os.makedirs(os.path.join(base_path, "incoming"))
     with open(os.path.join(base_path, "public.key"), "w") as f:
-        f.write(magnetron.gpg.get_default_public_key())
+        f.write(reprise.gpg.get_default_public_key())
 
 
 def check_name(name):
@@ -83,7 +83,7 @@ class Repository:
                 origin=name,
                 label=name,
                 description=name,
-                sign_with=magnetron.gpg.get_default_key_id(),
+                sign_with=reprise.gpg.get_default_key_id(),
             ).strip() + "\n")
             f.write("\n")
         return cls(name)
@@ -99,11 +99,11 @@ class Repository:
         if not os.path.exists(filename):
             raise FileNotFoundError(
                 "[Errno 2] No such file or directory: " + repr(filename))
-        magnetron.reprepro.include_deb(self.path, filename)
+        reprise.reprepro.include_deb(self.path, filename)
 
     def remove(self, package):
         ''' remove a package from the repository '''
-        magnetron.reprepro.remove(self.path, package)
+        reprise.reprepro.remove(self.path, package)
 
     def expunge(self):
         ''' delete this repository '''
@@ -116,7 +116,7 @@ class Repository:
 
     def packages(self):
         ''' list packages '''
-        for spec in sorted(magnetron.reprepro.list_packages(
+        for spec in sorted(reprise.reprepro.list_packages(
                 self.path).split("\n")):
             if spec:
                 yield Package(spec)

@@ -16,8 +16,8 @@ exec { "update":
 
 file { "/home/vagrant/.bash_login":
   content => "export LC_ALL=C
-alias magnetron='PYTHONPATH=/home/vagrant/magnetron/ python3 -m magnetron'
-cd /home/vagrant/magnetron
+alias reprise='PYTHONPATH=/home/vagrant/reprise/ python3 -m reprise'
+cd /home/vagrant/reprise
 ",
 }
 
@@ -50,7 +50,7 @@ package { "python3-docopt":
 
 exec { "import private key":
   command => "gpg --allow-secret-key-import --import \
-      /vagrant/magnetron/tests/private.key",
+      /vagrant/reprise/tests/private.key",
   unless => "gpg --list-secret-keys | grep 3F479202",
   user => "vagrant",
   environment => ["HOME=/home/vagrant/"],
@@ -86,6 +86,6 @@ exec { "cat ~/.ssh/id_rsa.pub >> ~/.ssh/authorized_keys && \
       ssh-keyscan -t rsa localhost >> ~/.ssh/known_hosts":
   user => "vagrant",
   environment => ["HOME=/home/vagrant/"],
-  unless => "grep vagrant@magnetron /home/vagrant/.ssh/authorized_keys",
+  unless => "grep vagrant@reprise /home/vagrant/.ssh/authorized_keys",
   require => Exec["ssh-keygen -t rsa -N '' -f ~/.ssh/id_rsa"],
 }

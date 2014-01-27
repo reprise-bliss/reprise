@@ -1,21 +1,21 @@
-.TH magnetron 1 "November 2013" Linux "User Manuals"
+.TH reprise 1 "November 2013" Linux "User Manuals"
 .SH NAME
-magnetron - debian package repository manager
+reprise - debian package repository manager
 .SH SYNOPSIS
 .br
-magnetron init [<repository>]
+reprise init [<repository>]
 .br
-magnetron show [<repository> [<package>]]
+reprise show [<repository> [<package>]]
 .br
-magnetron pull [\-s] [<user>@]<host> <remote\-repository> <repository>
+reprise pull [\-s] [<user>@]<host> <remote\-repository> <repository>
 .br
-magnetron source <repository>
+reprise source <repository>
 .br
-magnetron include <repository> <filename>
+reprise include <repository> <filename>
 .br
-magnetron delete <repository> [<package>]
+reprise delete <repository> [<package>]
 .br
-magnetron update <source\-repository> <repository>
+reprise update <source\-repository> <repository>
 .SH OPTIONS
 .TP
 \fB\-\-dry\-run \-s\fR
@@ -54,7 +54,7 @@ in /etc/sources.list
 .TP
 \fBinclude <repository> <filename>\fR
 Add a package to a repository, where <filename> is relative
-to '/srv/magnetron/incoming/'
+to '/srv/reprise/incoming/'
 .TP
 \fBdelete <repository>\fR
 Delete an entire repository
@@ -68,6 +68,6 @@ overwriting the contents of the target repository
 .SH AUTHOR
 devbliss GmbH <info@devbliss.com>
 .SH BUGS
-File bugs at <https://github.com/devbliss/magnetron/issues>
+File bugs at <https://github.com/devbliss/reprise/issues>
 .SH SEE ALSO
 .BR reprepro (1)

@@ -1,6 +1,6 @@
-all: magnetron.egg-info
+all: reprise.egg-info
 
-magnetron.egg-info:
+reprise.egg-info:
 	python3 setup.py egg_info
 
 test: all
@@ -16,7 +16,7 @@ pep8:
 
 deb: clean-all
 	dpkg-buildpackage -b -us -uc -tc
-	lintian --pedantic ../magnetron_*.deb ../magnetron_*.changes
+	lintian --pedantic ../reprise_*.deb ../reprise_*.changes
 
 ifdef DEB_HOST_ARCH
 install:
@@ -26,8 +26,8 @@ install:
 endif
 
 clean:
-	rm -rf magnetron.egg-info magnetron/__pycache__/
+	rm -rf reprise.egg-info reprise/__pycache__/
 	rm -rf build/ .coverage htmlcov/
 
 clean-all: clean
-	rm -rf ../magnetron_*.deb ../magnetron_*.changes
+	rm -rf ../reprise_*.deb ../reprise_*.changes

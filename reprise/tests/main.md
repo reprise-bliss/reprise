@@ -1,44 +1,44 @@
-# Magnetron Command Line API
+# Reprise Command Line API
 
-This document provides examples on how to use the magnetron command-line api.
+This document provides examples on how to use the reprise command-line api.
 
     >>> shutil.rmtree(base_path, ignore_errors=True)
 
-Command: `magnetron init`
+Command: `reprise init`
 
     >>> main("init")
     >>> main("init")
     already initialized
 
-Command: `magnetron init <repository>`
+Command: `reprise init <repository>`
 
     >>> main("init", "test-repo")
 
-Command: `magnetron source <repository>`
+Command: `reprise source <repository>`
 
     >>> main("source", "test-repo")
-    deb ssh://...@...:/home/vagrant/magnetron/.tests_srv/test-repo dist main
+    deb ssh://...@...:/home/vagrant/reprise/.tests_srv/test-repo dist main
 
     >>> main("source", "does-not-exist")
     repository doesn't exist
 
-Command: `magnetron show`
+Command: `reprise show`
 
     >>> main("show")
     test-repo
 
-Command: `magnetron show <repository>`
+Command: `reprise show <repository>`
 
     >>> main("show", "test-repo")
     >>> main("show", "hello-repo")
     repository doesn't exist
 
-Command: `magnetron show <repository> <package>`
+Command: `reprise show <repository> <package>`
 
     >>> main("show", "test-repo", "hello")
     package not found
 
-Command: `magnetron include <repository> <filename>`
+Command: `reprise include <repository> <filename>`
 
     >>> filename = glob.glob("/var/cache/apt/archives/pep8_*_all.deb")[0]
     >>> _ = shutil.copy(filename, os.path.join(base_path, "incoming"))
@@ -53,7 +53,7 @@ Command: `magnetron include <repository> <filename>`
     >>> main("show", "test-repo", "pep8")
     pep8 ...-0ubuntu1 (amd64, armhf, i386)
 
-Command: `magnetron update <source-repository> <target-repository>`
+Command: `reprise update <source-repository> <target-repository>`
 
     >>> main("init", "test-repo-2")
     >>> main("update", "test-repo", "test-repo-2")
@@ -62,12 +62,12 @@ Command: `magnetron update <source-repository> <target-repository>`
     >>> main("update", "doesn't exist", "test-repo-2")
     repository doesn't exist
 
-Command: `magnetron delete <repository> <package>`
+Command: `reprise delete <repository> <package>`
 
     >>> main("delete", "test-repo", "pep8")
     >>> main("show", "test-repo")
 
-Command: `magnetron delete <repository>`
+Command: `reprise delete <repository>`
 
     >>> main("show")
     test-repo
@@ -82,7 +82,7 @@ Command: `magnetron delete <repository>`
     >>> main("delete", "doesnt-exist")
     repository doesn't exist
 
-Command: `magnetron pull`
+Command: `reprise pull`
 
     >>> main("init", "remote")
     >>> main("include", "remote", filename)

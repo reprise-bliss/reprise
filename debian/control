@@ -1,4 +1,4 @@
-Source: magnetron
+Source: reprise
 Maintainer: ☃ <team_schneemann@devbliss.com>
 Section: python
 Priority: optional
@@ -10,7 +10,7 @@ Build-Depends: python3 (>= 3.3.1),
                debhelper (>= 9)
 Standards-Version: 3.9.4
 
-Package: magnetron
+Package: reprise
 Architecture: all
 Depends: python3 (>= 3.3.1),
          python3-setuptools,
