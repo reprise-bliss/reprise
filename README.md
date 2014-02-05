@@ -38,6 +38,8 @@ First, create a default gpg key if you don't already have one:
 This will take a long time, especially on virtual machines, which typically
 don't have much entropy available.
 
+Note: Reprise depends on `python3-docopt`, which you can find [in this PPA](https://launchpad.net/~stefano-palazzo/+archive/docopt).
+
 To bootstrap Reprise you need to upload an initial package to a server and
 install it using `gdebi` (*install gdebi-core, NOT the gdebi package*). From
 then on you can use Reprise to host it's own packages and this way update
