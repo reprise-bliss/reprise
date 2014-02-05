@@ -28,6 +28,16 @@ on an EC2 instance.
 
 ## Installation
 
+Because Reprise will write files to `/srv`, you should run all of it's
+commands __as root__.
+
+First, create a default gpg key if you don't already have one:
+
+    gpg --gen-key
+
+This will take a long time, especially on virtual machines, which typically
+don't have much entropy available.
+
 To bootstrap Reprise you need to upload an initial package to a server and
 install it using `gdebi` (*install gdebi-core, NOT the gdebi package*). From
 then on you can use Reprise to host it's own packages and this way update
