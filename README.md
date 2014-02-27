@@ -89,7 +89,7 @@ public access via HTTP is wanted a regular web server needs to be set up.
 The test suite is located in `reprise/tests/`. You can run the tests by
 typing `make test` (or `make coverage` to also ensure full code coverage).
 
-Rperise also comes with a Vagrantfile and Puppet manifest, letting you set
+Reprise also comes with a Vagrantfile and Puppet manifest, letting you set
 up a testing environment using [Vagrant](http://vagrantup.com):
 
     vagrant up
