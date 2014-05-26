@@ -64,9 +64,9 @@ a local program and all commands will be sent to the server via SSH.
 ### Uploading Packages
 
 Uploading packages is simply done via `scp`. Copy the Debian package into
-`/srv/Reprise/incomming` like:
+`/srv/Reprise/incoming` like:
 
-    scp <package> <user>@<host>:/srv/reprise/incomming/
+    scp <package> <user>@<host>:/srv/reprise/incoming/
 
 Afterwards run `reprise include <repository> <package>` to make the package
 available in your repository.
