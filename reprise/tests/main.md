@@ -51,14 +51,14 @@ Command: `reprise include <repository> <filename>`
     repository doesn't exist
 
     >>> main("show", "test-repo", "pep8")
-    pep8 ...-0ubuntu1 (amd64, armhf, i386)
+    pep8 ... (amd64, armhf, i386)
 
 Command: `reprise update <source-repository> <target-repository>`
 
     >>> main("init", "test-repo-2")
     >>> main("update", "test-repo", "test-repo-2")
     >>> main("show", "test-repo")
-    pep8 ...-0ubuntu1
+    pep8 ...
     >>> main("update", "doesn't exist", "test-repo-2")
     repository doesn't exist
 
@@ -97,4 +97,4 @@ Command: `reprise pull`
 
     >>> main("pull", "localhost", "remote", "local")
     >>> main("show", "local")
-    pep8 1.3.3-0ubuntu1
+    pep8 ...
