@@ -16,7 +16,7 @@ packages needs to add the public key using `apt-key`.
 
     >>> print(get_default_public_key())
     -----BEGIN PGP PUBLIC KEY BLOCK-----
-    Version: GnuPG v1.4.12 (GNU/Linux)
+    Version: GnuPG v1...
     <BLANKLINE>
     mQINBFGTQwgBEADfsu4HiJwgsCJggMmK+WFnppltqE...
 
@@ -116,10 +116,10 @@ Let's create a repository and add a package:
     >>> repository.add(filename)
 
     >>> list(repository.packages())
-    [<Package '...|main|amd64: pep8 1.3.3-0ubuntu1'>, ...]
+    [<Package '...|main|amd64: pep8 ...>, ...]
 
     >>> list(repository.get("pep8"))
-    [<Package '...|main|amd64: pep8 1.3.3-0ubuntu1'>, ...]
+    [<Package '...|main|amd64: ...'>, ...]
 
     >>> repository.get("does-not-exist")
     Traceback (most recent call last):
